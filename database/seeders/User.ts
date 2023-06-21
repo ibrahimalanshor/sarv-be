@@ -5,6 +5,7 @@ export default class extends BaseSeeder {
   public async run () {
     await User.create({
       email: 'test@gmail.com',
+      name: 'Test',
       password: 'password'
     })
   }
