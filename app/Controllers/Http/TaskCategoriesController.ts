@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import TaskCategory from 'App/Models/TaskCategory'
 import User from 'App/Models/User'
 import CreateTaskCategoryValidator from 'App/Validators/TaskCategory/CreateTaskCategoryValidator'
+import UpdateTaskCategoryValidator from 'App/Validators/TaskCategory/UpdateTaskCategoryValidator'
 
 export default class TaskCategoriesController {
   public async index(ctx: HttpContextContract) {
@@ -26,13 +27,22 @@ export default class TaskCategoriesController {
   public async show(ctx: HttpContextContract) {
     return ctx.response.ok(await TaskCategory.query()
       .withScopes(scopes => scopes.visibleTo(ctx.auth.user as User))
-      .where('id', ctx.params.id)
+      .where('id', ctx.request.param('id'))
       .firstOrFail())
   }
 
-  public async edit({}: HttpContextContract) {}
+  public async update(ctx: HttpContextContract) {
+    await ctx.request.validate(UpdateTaskCategoryValidator)
 
-  public async update({}: HttpContextContract) {}
+    const taskCategory = await TaskCategory.query()
+      .withScopes(scopes => scopes.visibleTo(ctx.auth.user as User))
+      .where('id', ctx.request.param('id'))
+      .firstOrFail()
+    
+    await taskCategory.merge(ctx.request.body()).save()
+
+    return ctx.response.ok(taskCategory)
+  }
 
   public async destroy({}: HttpContextContract) {}
 }

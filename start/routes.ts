@@ -29,6 +29,6 @@ Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
 
   Route.group(() => {
-    Route.resource('task-categories', 'TaskCategoriesController').except(['create'])
+    Route.resource('task-categories', 'TaskCategoriesController').except(['create', 'edit'])
   }).middleware(['auth', 'resources'])
 }).prefix('/api').as('api')
