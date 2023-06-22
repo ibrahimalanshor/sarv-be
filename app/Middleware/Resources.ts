@@ -2,6 +2,13 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class Resources {
+  private parsePageQuery(page: Record<string, any>): { size: number, number: number } {
+    return {
+      size: Number(page?.size ?? 10),
+      number: Number(page?.number ?? 1)
+    }
+  }
+
   private parseSortQuery(sort: string): { column: string, direction: 'asc' | 'desc' } {
     const isDesc = sort.charAt(0) === '-'
     const column = isDesc ? sort.slice(1) : sort
@@ -20,19 +27,19 @@ export default class Resources {
         }),
         sort: schema.string.nullableAndOptional([
           rules.alpha({ allow: ['dash'] })
-        ])
+        ]),
+        filter: schema.object.nullableAndOptional().anyMembers()
       }),
-      data: ctx.request.qs()
+      data: ctx.request.qs(),
+      cacheKey: ctx.routeKey
     })
 
-    const { page, sort } = ctx.request.qs()
+    const { page, sort, filter } = ctx.request.qs()
 
     ctx.request.updateQs({
-      page: {
-        size: Number(page?.size ?? 10),
-        number: Number(page?.number ?? 1)
-      },
-      sort: this.parseSortQuery(sort ?? 'id')
+      page: this.parsePageQuery(page ?? {}),
+      sort: this.parseSortQuery(sort ?? 'id'),
+      filter: filter ?? {}
     })
     
     await next()
