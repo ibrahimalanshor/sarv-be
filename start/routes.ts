@@ -27,4 +27,6 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.post('/login', 'AuthController.login')
   Route.post('/register', 'AuthController.register')
+
+  Route.resource('task-categories', 'TaskCategoriesController')
 }).prefix('/api')
