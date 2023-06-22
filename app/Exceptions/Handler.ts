@@ -27,6 +27,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return ctx.response.unauthorized({ error: 'Invalid Credential' })
     }
 
+    if (error.code === 'E_UNAUTHORIZED_ACCESS') {
+      return ctx.response.unauthorized({ error: 'Unauthorized' })
+    }
+
     return super.handle(error, ctx)
   }
 }
