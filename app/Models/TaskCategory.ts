@@ -9,7 +9,10 @@ export default class TaskCategory extends BaseModel {
   @column()
   public name: string
 
-  @belongsTo(() => User)
+  @column()
+  public user_id: number
+
+  @belongsTo(() => User, { localKey: 'user_id' })
   public user: BelongsTo<typeof User>
 
   @column.dateTime({ autoCreate: true })
