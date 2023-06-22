@@ -44,5 +44,14 @@ export default class TaskCategoriesController {
     return ctx.response.ok(taskCategory)
   }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy(ctx: HttpContextContract) {
+    const taskCategory = await TaskCategory.query()
+      .withScopes(scopes => scopes.visibleTo(ctx.auth.user as User))
+      .where('id', ctx.request.param('id'))
+      .firstOrFail()
+    
+    await taskCategory.delete()
+
+    return ctx.response.ok(taskCategory)
+  }
 }
