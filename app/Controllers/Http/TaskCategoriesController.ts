@@ -23,7 +23,12 @@ export default class TaskCategoriesController {
     return ctx.response.created(taskCategory)
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show(ctx: HttpContextContract) {
+    return ctx.response.ok(await TaskCategory.query()
+      .withScopes(scopes => scopes.visibleTo(ctx.auth.user as User))
+      .where('id', ctx.params.id)
+      .firstOrFail())
+  }
 
   public async edit({}: HttpContextContract) {}
 

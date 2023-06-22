@@ -31,6 +31,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return ctx.response.unauthorized({ error: 'Unauthorized' })
     }
 
+    if (error.code === 'E_ROW_NOT_FOUND') {
+      return ctx.response.notFound({ error: 'Resource Not Found' })
+    }
+
     return super.handle(error, ctx)
   }
 }
