@@ -25,10 +25,10 @@ Route.get('/', async () => {
 })
 
 Route.group(() => {
-  Route.post('/login', 'AuthController.login')
-  Route.post('/register', 'AuthController.register')
+  Route.post('/login', 'AuthController.login').as('login')
+  Route.post('/register', 'AuthController.register').as('register')
 
   Route.group(() => {
     Route.resource('task-categories', 'TaskCategoriesController').except(['create'])
   }).middleware(['auth', 'resources'])
-}).prefix('/api')
+}).prefix('/api').as('api')

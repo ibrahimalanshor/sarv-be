@@ -18,7 +18,13 @@ export default class Resources {
     }
   }
 
-  public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
+  private isIndexRoute(ctx: HttpContextContract): boolean {
+    const asArray = ctx.route?.name?.split('.') ?? []
+
+    return asArray[asArray?.length - 1] === 'index'
+  }
+
+  private async validateIndexResource(ctx) {
     await ctx.request.validate({
       schema: schema.create({
         page: schema.object.nullableAndOptional().members({
@@ -41,6 +47,12 @@ export default class Resources {
       sort: this.parseSortQuery(sort ?? 'id'),
       filter: filter ?? {}
     })
+  }
+
+  public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
+    if (this.isIndexRoute(ctx)) {
+      await this.validateIndexResource(ctx)
+    }
     
     await next()
   }
