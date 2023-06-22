@@ -9,20 +9,6 @@ export default class AppProvider {
 
   public async boot() {
     // IoC container is ready
-    const Request = this.app.container.use('Adonis/Core/Request')
-    const {  schema, rules } = await import('@ioc:Adonis/Core/Validator')
-
-    Request.macro('validateResourcesQs', async function () {
-      await this.validate({
-        schema: schema.create({
-          page: schema.object([rules.required()]).members({
-            size: schema.number([rules.required()]),
-            number: schema.number([rules.required()])
-          })
-        }),
-        data: this.qs()
-      })
-    })
   }
 
   public async ready() {
