@@ -5,10 +5,11 @@ import CreateTaskCategoryValidator from 'App/Validators/TaskCategory/CreateTaskC
 
 export default class TaskCategoriesController {
   public async index(ctx: HttpContextContract) {
-    const { page } = ctx.request.qs()
+    const { page, sort } = ctx.request.qs()
     
     return ctx.response.ok(await TaskCategory.query()
       .withScopes((scopes) => scopes.visibleTo(ctx.auth.user as User))
+      .orderBy(sort.column, sort.direction)
       .paginate(page.number, page.size))
   }
 
