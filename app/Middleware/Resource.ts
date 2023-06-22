@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 
-export default class Resources {
+export default class Resource {
   private parsePageQuery(page: Record<string, any>): { size: number, number: number } {
     return {
       size: Number(page?.size ?? 10),
