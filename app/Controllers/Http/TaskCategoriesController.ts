@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import TaskCategory from 'App/Models/TaskCategory'
+import CreateTaskCategoryValidator from 'App/Validators/TaskCategory/CreateTaskCategoryValidator'
 
 export default class TaskCategoriesController {
   public async index(ctx: HttpContextContract) {
@@ -8,9 +9,14 @@ export default class TaskCategoriesController {
     return ctx.response.ok(await TaskCategory.query().paginate(page, 10))
   }
 
-  public async create({}: HttpContextContract) {}
+  public async store(ctx: HttpContextContract) {
+    await ctx.request.validate(CreateTaskCategoryValidator)
 
-  public async store({}: HttpContextContract) {}
+    const taskCategory = await ctx.auth.user?.related('taskCategories')
+      .create(ctx.request.body())
+
+    return ctx.response.created(taskCategory)
+  }
 
   public async show({}: HttpContextContract) {}
 
