@@ -31,4 +31,8 @@ Route.group(() => {
   Route.group(() => {
     Route.resource('task-categories', 'TaskCategoriesController').except(['create', 'edit'])
   }).middleware(['auth', 'resource'])
+
+  Route.group(() => {
+    Route.resource('task-statuses', 'TaskStatusesController').except(['create', 'edit'])
+  }).middleware(['auth', 'resource'])
 }).prefix('/api').as('api')
