@@ -1,12 +1,12 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { TaskCategoriesRepository } from 'App/Repository/Modules/TaskCategoriesRepository'
-import CreateTaskCategoryValidator from 'App/Validators/TaskCategory/CreateTaskCategoryValidator'
-import UpdateTaskCategoryValidator from 'App/Validators/TaskCategory/UpdateTaskCategoryValidator'
 import { inject } from '@adonisjs/fold'
+import { TaskStatusesRepository } from 'App/Repository/Modules/TaskStatusesRepository'
+import CreateTaskStatusValidator from 'App/Validators/TaskStatus/CreateTaskStatusValidator'
+import UpdateTaskStatusValidator from 'App/Validators/TaskStatus/UpdateTaskStatusValidator'
 
 @inject()
-export default class TaskCategoriesController {
-  constructor(public repository: TaskCategoriesRepository) {}
+export default class TaskStatusesController {
+  constructor(public repository: TaskStatusesRepository) {}
 
   public async index(ctx: HttpContextContract) {
     const { page, sort, filter } = ctx.request.qs()
@@ -15,7 +15,7 @@ export default class TaskCategoriesController {
   }
 
   public async store(ctx: HttpContextContract) {
-    await ctx.request.validate(CreateTaskCategoryValidator)
+    await ctx.request.validate(CreateTaskStatusValidator)
 
     return ctx.response.created(await this.repository.store({
       values: {
@@ -35,7 +35,7 @@ export default class TaskCategoriesController {
   }
 
   public async update(ctx: HttpContextContract) {
-    await ctx.request.validate(UpdateTaskCategoryValidator)
+    await ctx.request.validate(UpdateTaskStatusValidator)
 
     return ctx.response.ok(await this.repository.updateOne({
       filter: { id: ctx.request.param('id') },
