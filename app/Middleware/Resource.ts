@@ -18,10 +18,10 @@ export default class Resource {
     }
   }
 
-  private isIndexRoute(ctx: HttpContextContract): boolean {
+  private isRouteName(ctx: HttpContextContract, name: string): boolean {
     const asArray = ctx.route?.name?.split('.') ?? []
 
-    return asArray[asArray?.length - 1] === 'index'
+    return asArray[asArray?.length - 1] === name
   }
 
   private async validateIndexResource(ctx) {
@@ -34,24 +34,47 @@ export default class Resource {
         sort: schema.string.nullableAndOptional([
           rules.alpha({ allow: ['dash'] })
         ]),
-        filter: schema.object.nullableAndOptional().anyMembers()
+        filter: schema.object.nullableAndOptional().anyMembers(),
+        include: schema.array.nullableAndOptional().members(schema.string())
       }),
       data: ctx.request.qs(),
       cacheKey: ctx.routeKey
     })
 
-    const { page, sort, filter } = ctx.request.qs()
+    const { page, sort, filter, include } = ctx.request.qs()
 
     ctx.request.updateQs({
       page: this.parsePageQuery(page ?? {}),
       sort: this.parseSortQuery(sort ?? 'id'),
-      filter: filter ?? {}
+      filter: filter ?? {},
+      include
+    })
+  }
+
+  private async validateShowResource(ctx) {
+    await ctx.request.validate({
+      schema: schema.create({
+        include: schema.array.nullableAndOptional().members(schema.string())
+      }),
+      data: ctx.request.qs(),
+      cacheKey: ctx.routeKey
+    })
+
+    const { page, sort, filter, include } = ctx.request.qs()
+
+    ctx.request.updateQs({
+      page: this.parsePageQuery(page ?? {}),
+      sort: this.parseSortQuery(sort ?? 'id'),
+      filter: filter ?? {},
+      include
     })
   }
 
   public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
-    if (this.isIndexRoute(ctx)) {
+    if (this.isRouteName(ctx, 'index')) {
       await this.validateIndexResource(ctx)
+    } else if (this.isRouteName(ctx, 'show')) {
+      await this.validateShowResource(ctx)
     }
     
     await next()
