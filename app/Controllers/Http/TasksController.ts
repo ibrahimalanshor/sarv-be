@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { inject } from '@adonisjs/fold'
-import { TasksRepository } from 'App/Repository/Modules/TasksRepository'
+import { TasksRepository } from 'App/Repositories/Modules/TasksRepository'
 import CreateTaskValidator from 'App/Validators/Task/CreateTaskValidator'
 import UpdateTaskValidator from 'App/Validators/Task/UpdateTaskValidator'
 
