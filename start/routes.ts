@@ -23,3 +23,20 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async () => {
   return { hello: 'world' }
 })
+
+Route.group(() => {
+  Route.post('/login', 'AuthController.login').as('login')
+  Route.post('/register', 'AuthController.register').as('register')
+
+  Route.group(() => {
+    Route.resource('task-categories', 'TaskCategoriesController').except(['create', 'edit'])
+  }).middleware(['auth', 'resource'])
+
+  Route.group(() => {
+    Route.resource('task-statuses', 'TaskStatusesController').except(['create', 'edit'])
+  }).middleware(['auth', 'resource'])
+
+  Route.group(() => {
+    Route.resource('tasks', 'TasksController').except(['create', 'edit'])
+  }).middleware(['auth', 'resource'])
+}).prefix('/api').as('api')
