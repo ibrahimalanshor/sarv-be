@@ -1,13 +1,13 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Repository from "App/Repository/Repository";
+import TaskCategory from "App/Models/TaskCategory";
+import Repository from "App/Repositories/Repository";
 import { DeleteOneOptions, GetAllOptions, GetOneOptions, UpdateOneOptions } from "Contracts/repository";
 import User from 'App/Models/User';
 import { inject } from '@adonisjs/fold';
-import TaskStatus from 'App/Models/TaskStatus';
 
 @inject()
-export class TaskStatusesRepository extends Repository {
-    public model = TaskStatus
+export class TaskCategoriesRepository extends Repository {
+    public model = TaskCategory
 
     public async getAll(options: GetAllOptions<HttpContextContract>) {
         return await this.model.query()

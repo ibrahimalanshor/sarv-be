@@ -1,18 +1,22 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import TaskCategory from "App/Models/TaskCategory";
-import Repository from "App/Repository/Repository";
+import Repository from "App/Repositories/Repository";
 import { DeleteOneOptions, GetAllOptions, GetOneOptions, UpdateOneOptions } from "Contracts/repository";
 import User from 'App/Models/User';
 import { inject } from '@adonisjs/fold';
+import Task from 'App/Models/Task';
 
 @inject()
-export class TaskCategoriesRepository extends Repository {
-    public model = TaskCategory
+export class TasksRepository extends Repository {
+    public model = Task
 
     public async getAll(options: GetAllOptions<HttpContextContract>) {
         return await this.model.query()
             .withScopes((scopes) => scopes.visibleTo(options.context?.auth.user as User))
             .if(options.filter.name, query => query.whereILike('name', `%${options.filter.name}%`))
+            .if(options.filter.task_category_id, query => query.where('task_category_id', options.filter.task_category_id))
+            .if(options.filter.task_status_id, query => query.where('task_status_id', options.filter.task_status_id))
+            .if(options.include?.includes('category'), query => query.preload('category'))
+            .if(options.include?.includes('status'), query => query.preload('status'))
             .orderBy(options.sort.column, options.sort.direction)
             .paginate(options.page.number, options.page.size)
     }
@@ -21,6 +25,8 @@ export class TaskCategoriesRepository extends Repository {
         return await this.model.query()
             .withScopes(scopes => scopes.visibleTo(options.context?.auth.user as User))
             .where('id', options.filter.id)
+            .if(options.include?.includes('category'), query => query.preload('category'))
+            .if(options.include?.includes('status'), query => query.preload('status'))
             .firstOrFail()
     }
 
