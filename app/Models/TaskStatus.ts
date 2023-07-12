@@ -10,6 +10,9 @@ export default class TaskStatus extends BaseModel {
   public name: string
 
   @column()
+  public color: string
+
+  @column()
   public user_id: number
 
   @column.dateTime({ autoCreate: true })

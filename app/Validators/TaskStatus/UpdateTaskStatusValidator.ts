@@ -26,7 +26,8 @@ export default class UpdateTaskStatusValidator {
   public schema = schema.create({
     name: schema.string({}, [
       rules.required()
-    ])
+    ]),
+    color: schema.enum.nullableAndOptional(['light', 'dark', 'primary', 'success', 'warning', 'danger'])
   })
 
   /**
