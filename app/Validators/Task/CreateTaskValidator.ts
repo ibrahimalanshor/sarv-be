@@ -12,7 +12,7 @@ export default class CreateTaskValidator {
         name: schema.string({}, [
             rules.required(),
         ]),
-        task_category_id: schema.number([
+        task_category_id: schema.number.nullableAndOptional([
             rules.exists({
                 table: 'task_categories',
                 column: 'id',
