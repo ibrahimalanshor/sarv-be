@@ -14,8 +14,8 @@ export default class Task extends BaseModel {
   @column()
   public description: string
 
-  @column()
-  public due_date: Date
+  @column.dateTime()
+  public due_date: DateTime
 
   @column()
   public user_id: number
