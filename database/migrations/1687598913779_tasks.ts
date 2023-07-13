@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.string('name').notNullable()
       table.text('description').nullable()
       table.timestamp('due_date').nullable()
+      table.enum('priority', ['low', 'medium', 'high']).nullable()
       table.integer('task_category_id').nullable().unsigned().references('task_categories.id').onDelete('CASCADE')
       table.integer('task_status_id').nullable().unsigned().references('task_statuses.id').onDelete('CASCADE')
       table.integer('user_id').notNullable().unsigned().references('users.id').onDelete('CASCADE')
