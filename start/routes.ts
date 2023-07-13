@@ -29,6 +29,10 @@ Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
 
   Route.group(() => {
+    Route.get('/me', 'AuthController.me').as('me')
+  }).middleware(['auth'])
+
+  Route.group(() => {
     Route.resource('task-categories', 'TaskCategoriesController').except(['create', 'edit'])
   }).middleware(['auth', 'resource'])
 

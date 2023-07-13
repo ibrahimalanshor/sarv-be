@@ -27,4 +27,8 @@ export default class AuthController {
             context
         }))
     }
+
+    public async me(context: HttpContextContract) {
+        return context.response.ok(context.auth.user)
+    }
 }
