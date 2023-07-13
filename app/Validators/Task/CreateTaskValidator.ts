@@ -16,6 +16,7 @@ export default class CreateTaskValidator {
         due_date: schema.date.nullableAndOptional({
             format: 'sql'
         }),
+        priority: schema.enum.nullableAndOptional(['low', 'medium', 'high']),
         task_category_id: schema.number.nullableAndOptional([
             rules.exists({
                 table: 'task_categories',
