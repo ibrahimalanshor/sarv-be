@@ -30,6 +30,10 @@ export default class AuthController {
         }))
     }
 
+    public async logout(context: HttpContextContract) {
+        return context.response.ok(await this.authService.logout({ context }))
+    }
+
     public async me(context: HttpContextContract) {
         return context.response.ok(context.auth.user)
     }

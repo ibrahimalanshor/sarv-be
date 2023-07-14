@@ -20,3 +20,7 @@ export interface RegisterOptions<Context> {
     context: Context,
     user: Partial<User>
 }
+
+export interface LogoutOptions<Context> {
+    context: Context,
+}

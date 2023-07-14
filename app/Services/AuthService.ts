@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/fold';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { AuthResult, LoginOptions, RegisterOptions } from "Contracts/services/auth.service";
+import { AuthResult, LoginOptions, LogoutOptions, RegisterOptions } from "Contracts/services/auth.service";
 import { UserRepository } from 'App/Repositories/Modules/UserRepository'
 
 
@@ -27,5 +27,9 @@ export class AuthService {
             token: token.toJSON(),
             user
         }
+    }
+
+    public async logout(options: LogoutOptions<HttpContextContract>) {
+        await options.context.auth.use('api').logout()
     }
 }
