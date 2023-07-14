@@ -6,7 +6,7 @@ import { inject } from '@adonisjs/fold';
 import TaskStatus from 'App/Models/TaskStatus';
 
 @inject()
-export class TaskStatusesRepository extends Repository {
+export class TaskStatusesRepository extends Repository<TaskStatus> {
     public model = TaskStatus
 
     public async getAll(options: GetAllOptions<HttpContextContract>) {

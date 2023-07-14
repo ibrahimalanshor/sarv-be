@@ -1,10 +1,13 @@
 import { inject } from '@adonisjs/fold';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User';
-import { AuthResult, LoginOptions, RegisterOptions } from "Contracts/services/auth.service";
+import { AuthResult, LoginOptions, LogoutOptions, RegisterOptions } from "Contracts/services/auth.service";
+import { UserRepository } from 'App/Repositories/Modules/UserRepository'
+
 
 @inject()
-export default class AuthService {
+export class AuthService {
+    constructor (private userRepository: UserRepository) {}
+
     public async login(options: LoginOptions<HttpContextContract>): Promise<AuthResult> {
         const token = await options.context.auth.use('api').attempt(options.credentials.email, options.credentials.password)
 
@@ -15,12 +18,18 @@ export default class AuthService {
     }
 
     public async register(options: RegisterOptions<HttpContextContract>): Promise<AuthResult> {
-        const user = await User.create(options.user)
+        const user = await this.userRepository.store({
+            values: options.user
+        })
         const token = await options.context.auth.use('api').generate(user)
 
         return {
             token: token.toJSON(),
             user
         }
+    }
+
+    public async logout(options: LogoutOptions<HttpContextContract>) {
+        await options.context.auth.use('api').logout()
     }
 }

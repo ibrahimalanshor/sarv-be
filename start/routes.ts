@@ -29,6 +29,8 @@ Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
 
   Route.group(() => {
+    Route.post('/logout', 'AuthController.logout').as('logout')
+
     Route.get('/me', 'AuthController.me').as('me')
     Route.patch('/me/photo', 'AuthController.updateMePhoto').as('me.photo')
   }).middleware(['auth'])

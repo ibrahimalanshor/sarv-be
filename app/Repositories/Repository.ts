@@ -1,7 +1,7 @@
 import { LucidModel } from "@ioc:Adonis/Lucid/Orm"
 import { GetAllOptions, StoreOptions, GetOneOptions, UpdateOneOptions, DeleteOneOptions } from "Contracts/repository"
 
-export default abstract class Repository {
+export default abstract class Repository<T> {
     public abstract model: LucidModel
 
     public async getAll(options: GetAllOptions) {
@@ -10,8 +10,8 @@ export default abstract class Repository {
             .paginate(options.page.number, options.page.size)
     }
 
-    public async store(options: StoreOptions) {
-        return await this.model.create(options.values)
+    public async store(options: StoreOptions): Promise<T> {
+        return await this.model.create(options.values) as T
     }
 
     public async getOne(options: GetOneOptions) {
