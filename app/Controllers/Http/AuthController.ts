@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/fold'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AuthService from 'App/Services/AuthService'
+import { AuthService } from 'App/Services/AuthService'
 import { UserService } from 'App/Services/UserService'
 import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import RegisterValidator from 'App/Validators/Auth/RegisterValidator'

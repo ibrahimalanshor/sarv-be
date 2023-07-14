@@ -8,7 +8,7 @@ import { isNullOrUndefined } from 'App/Utils/check-type.util'
 import { parseBoolean } from 'App/Utils/parse-type.util'
 
 @inject()
-export class TasksRepository extends Repository {
+export class TasksRepository extends Repository<Task> {
     public model = Task
 
     public async getAll(options: GetAllOptions<HttpContextContract>) {
