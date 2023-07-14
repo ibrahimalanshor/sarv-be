@@ -5,7 +5,7 @@ export default class UpdateMePhotoValidator {
     constructor(protected ctx: HttpContextContract) {}
 
     public schema = schema.create({
-        photo: schema.file.nullableAndOptional({
+        photo: schema.file({
             extnames: ['jpg', 'jpeg', 'png', 'svg']
         })
     })

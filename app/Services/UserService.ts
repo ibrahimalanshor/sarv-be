@@ -8,12 +8,12 @@ import { UserRepository } from 'App/Repositories/Modules/UserRepository'
 export class UserService {
     constructor (private userRepository: UserRepository) {}
 
-    public async updateMePhoto(options: UpdateUserPhotoContract<HttpContextContract>) {
+    public async updateUserPhoto(options: UpdateUserPhotoContract<HttpContextContract>) {
         const photo = options.context.request.file('photo')
 
         await photo?.moveToDisk('./')
 
-        await this.userRepository.updateOne({
+        return await this.userRepository.updateOne({
             filter: {
                 id: options.context.auth.user?.id
             },
