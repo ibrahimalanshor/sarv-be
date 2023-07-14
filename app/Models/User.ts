@@ -20,6 +20,9 @@ export default class User extends BaseModel {
   @column()
   public rememberMeToken: string | null
 
+  @column()
+  public photo_src: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
