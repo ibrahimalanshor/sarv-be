@@ -13,14 +13,19 @@ export class TasksRepository extends Repository {
 
     public async getAll(options: GetAllOptions<HttpContextContract>) {
         return await this.model.query()
-            .withScopes((scopes) => scopes.visibleTo(options.context?.auth.user as User))
+            .withScopes((scopes) => {
+                scopes.visibleTo(options.context?.auth.user as User)
+
+                if (isNullOrUndefined(options.filter.is_due, { reverse: true })) {
+                    scopes.isDue(parseBoolean(options.filter.is_due))
+                }
+            })
             .if(options.filter.name, query => query.whereILike('name', `%${options.filter.name}%`))
             .if(options.filter.task_category_id, query => query.where('task_category_id', options.filter.task_category_id))
             .if(options.filter.task_status_id, query => query.where('task_status_id', options.filter.task_status_id))
             .if(options.filter.due_date_from, query => query.where('due_date', '>=', options.filter.due_date_from))
             .if(options.filter.due_date_to, query => query.where('due_date', '<=', options.filter.due_date_to))
             .if(options.filter.priority, query => query.where('priority', options.filter.priority))
-            .if(isNullOrUndefined(options.filter.is_due, { reverse: true }), query => query.where('due_date', parseBoolean(options.filter.is_due) ? '<' : '>' , new Date))
             .if(options.include?.includes('category'), query => query.preload('category'))
             .if(options.include?.includes('status'), query => query.preload('status'))
             .orderBy(options.sort.column, options.sort.direction)

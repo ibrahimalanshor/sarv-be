@@ -47,4 +47,14 @@ export default class Task extends BaseModel {
   public static visibleTo = scope((query, user: User) => {
     query.where('user_id', user.id)
   })
+
+  public static isDue = scope((query, value: boolean) => {
+    if (value) {
+      query.where('due_date', '<', new Date)
+    } else {
+      query.where(query => {
+        query.where('due_date', '>', new Date).orWhereNotNull('due_date')
+      })
+    }
+  })
 }
