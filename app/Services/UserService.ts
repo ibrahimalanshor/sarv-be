@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/fold';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Drive from '@ioc:Adonis/Core/Drive'
 import { UpdateUserPhotoContract } from "Contracts/services/user.service";
 import { UserRepository } from 'App/Repositories/Modules/UserRepository'
 
@@ -17,7 +18,7 @@ export class UserService {
                 id: options.context.auth.user?.id
             },
             values: {
-                photo_src: photo?.fileName
+                photo_src: await Drive.getUrl(photo?.fileName as string)
             }
         })
     }

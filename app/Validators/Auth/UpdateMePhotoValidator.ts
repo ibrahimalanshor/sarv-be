@@ -1,4 +1,4 @@
-import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
+import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class UpdateMePhotoValidator {
@@ -6,7 +6,7 @@ export default class UpdateMePhotoValidator {
 
     public schema = schema.create({
         photo: schema.file.nullableAndOptional({
-            extnames: ['jpg', 'png', 'svg']
+            extnames: ['jpg', 'jpeg', 'png', 'svg']
         })
     })
 
