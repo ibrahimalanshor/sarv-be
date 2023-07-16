@@ -27,7 +27,6 @@ export class TasksRepository extends Repository<Task> {
             .if(options.filter.due_date_to, query => query.where('due_date', '<=', options.filter.due_date_to))
             .if(options.filter.priority, query => query.where('priority', options.filter.priority))
             .if(options.include?.includes('category'), query => query.preload('category'))
-            .if(options.include?.includes('status'), query => query.preload('status'))
             .orderBy(options.sort.column, options.sort.direction)
             .paginate(options.page.number, options.page.size)
     }
@@ -37,7 +36,6 @@ export class TasksRepository extends Repository<Task> {
             .withScopes(scopes => scopes.visibleTo(options.context?.auth.user as User))
             .where('id', options.filter.id)
             .if(options.include?.includes('category'), query => query.preload('category'))
-            .if(options.include?.includes('status'), query => query.preload('status'))
             .firstOrFail()
     }
 
