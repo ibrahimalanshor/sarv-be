@@ -19,18 +19,10 @@ export default class CreateTaskValidator {
         priority: schema.number.nullableAndOptional([
             rules.range(1, 3)
         ]),
+        status: schema.enum.nullableAndOptional(['todo', 'pending', 'in-progress', 'done']),
         task_category_id: schema.number.nullableAndOptional([
             rules.exists({
                 table: 'task_categories',
-                column: 'id',
-                where: {
-                    user_id: this.refs.user.value?.id
-                }
-            })
-        ]),
-        task_status_id: schema.number.nullableAndOptional([
-            rules.exists({
-                table: 'task_statuses',
                 column: 'id',
                 where: {
                     user_id: this.refs.user.value?.id

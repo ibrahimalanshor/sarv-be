@@ -2,7 +2,6 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column, scope } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import TaskCategory from './TaskCategory'
-import TaskStatus from './TaskStatus'
 
 export default class Task extends BaseModel {
   @column({ isPrimary: true })
@@ -21,13 +20,13 @@ export default class Task extends BaseModel {
   public priority: string
 
   @column()
+  public status: string
+
+  @column()
   public user_id: number
 
   @column()
   public task_category_id: number
-
-  @column()
-  public task_status_id: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -40,9 +39,6 @@ export default class Task extends BaseModel {
 
   @belongsTo(() => TaskCategory, { localKey: 'id', foreignKey: 'task_category_id' })
   public category: BelongsTo<typeof TaskCategory>
-
-  @belongsTo(() => TaskStatus, { localKey: 'id', foreignKey: 'task_status_id' })
-  public status: BelongsTo<typeof TaskStatus>
 
   public static visibleTo = scope((query, user: User) => {
     query.where('user_id', user.id)
