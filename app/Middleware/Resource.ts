@@ -32,7 +32,7 @@ export default class Resource {
           number: schema.number.nullableAndOptional()
         }),
         sort: schema.string.nullableAndOptional([
-          rules.alpha({ allow: ['dash'] })
+          rules.alpha({ allow: ['dash', 'underscore'] })
         ]),
         filter: schema.object.nullableAndOptional().anyMembers(),
         include: schema.array.nullableAndOptional().members(schema.string())
