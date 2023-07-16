@@ -2,7 +2,6 @@ import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, afterCreate, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import TaskCategory from './TaskCategory'
-import TaskStatus from './TaskStatus'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -32,22 +31,10 @@ export default class User extends BaseModel {
   @hasMany(() => TaskCategory, { foreignKey: 'user_id' })
   public taskCategories: HasMany<typeof TaskCategory>
 
-  @hasMany(() => TaskStatus, { foreignKey: 'user_id' })
-  public taskStatus: HasMany<typeof TaskStatus>
-
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
-  }
-
-  @afterCreate()
-  public static async createTaskStatus (user: User) {
-    await user.related('taskStatus').createMany([
-      { name: 'Todo', color: 'light' },
-      { name: 'In Progress', color: 'primary' },
-      { name: 'Done', color: 'success' }
-    ])
   }
 }
