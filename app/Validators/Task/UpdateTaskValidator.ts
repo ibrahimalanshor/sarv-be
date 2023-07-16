@@ -28,15 +28,6 @@ export default class UpdateTaskValidator {
                     user_id: this.refs.user.value?.id
                 }
             })
-        ]),
-        task_status_id: schema.number.nullableAndOptional([
-            rules.exists({
-                table: 'task_statuses',
-                column: 'id',
-                where: {
-                    user_id: this.refs.user.value?.id
-                }
-            })
         ])
     })
 

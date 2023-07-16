@@ -28,9 +28,6 @@ export default class Task extends BaseModel {
   @column()
   public task_category_id: number
 
-  @column()
-  public task_status_id: number
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

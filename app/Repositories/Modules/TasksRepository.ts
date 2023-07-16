@@ -22,7 +22,7 @@ export class TasksRepository extends Repository<Task> {
             })
             .if(options.filter.name, query => query.whereILike('name', `%${options.filter.name}%`))
             .if(options.filter.task_category_id, query => query.where('task_category_id', options.filter.task_category_id))
-            .if(options.filter.task_status_id, query => query.where('task_status_id', options.filter.task_status_id))
+            .if(options.filter.status, query => query.where('status', options.filter.status))
             .if(options.filter.due_date_from, query => query.where('due_date', '>=', options.filter.due_date_from))
             .if(options.filter.due_date_to, query => query.where('due_date', '<=', options.filter.due_date_to))
             .if(options.filter.priority, query => query.where('priority', options.filter.priority))
