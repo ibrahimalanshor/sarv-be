@@ -53,4 +53,12 @@ export default class Task extends BaseModel {
       })
     }
   })
+
+  public static active = scope((query, value: boolean) => {
+    if (value) {
+      query.whereNotIn('status', ['pending', 'done'])
+    } else {
+      query.whereIn('status', ['pending', 'done'])
+    }
+  })
 }

@@ -6,7 +6,7 @@ import { inject } from '@adonisjs/fold';
 import Task from 'App/Models/Task';
 import { isNullOrUndefined } from 'App/Utils/check-type.util'
 import { parseBoolean } from 'App/Utils/parse-type.util'
-import { DateTime } from 'luxon';
+import { endOfDate } from 'App/Utils/date.util';
 
 @inject()
 export class TasksRepository extends Repository<Task> {
@@ -15,7 +15,7 @@ export class TasksRepository extends Repository<Task> {
     public async store(options: StoreOptions) {
         return await this.model.create({
             ...options.values,
-            ...(options.values.due_date ? { due_date: DateTime.fromISO(options.values.due_date).endOf('day') } : {})
+            ...(options.values.due_date ? { due_date: endOfDate(options.values.due_date) } : {})
         })
     }
 
@@ -26,6 +26,10 @@ export class TasksRepository extends Repository<Task> {
 
                 if (isNullOrUndefined(options.filter.is_due, { reverse: true })) {
                     scopes.isDue(parseBoolean(options.filter.is_due))
+                }
+
+                if (isNullOrUndefined(options.filter.is_active, { reverse: true })) {
+                    scopes.active(parseBoolean(options.filter.is_active))
                 }
             })
             .if(options.filter.name, query => query.whereILike('name', `%${options.filter.name}%`))
