@@ -1,15 +1,23 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Repository from "App/Repositories/Repository";
-import { DeleteOneOptions, GetAllOptions, GetOneOptions, UpdateOneOptions } from "Contracts/repository";
+import { DeleteOneOptions, GetAllOptions, GetOneOptions, UpdateOneOptions, StoreOptions } from "Contracts/repository";
 import User from 'App/Models/User';
 import { inject } from '@adonisjs/fold';
 import Task from 'App/Models/Task';
 import { isNullOrUndefined } from 'App/Utils/check-type.util'
 import { parseBoolean } from 'App/Utils/parse-type.util'
+import { DateTime } from 'luxon';
 
 @inject()
 export class TasksRepository extends Repository<Task> {
     public model = Task
+
+    public async store(options: StoreOptions) {
+        return await this.model.create({
+            ...options.values,
+            ...(options.values.due_date ? { due_date: DateTime.fromISO(options.values.due_date).endOf('day') } : {})
+        })
+    }
 
     public async getAll(options: GetAllOptions<HttpContextContract>) {
         return await this.model.query()
