@@ -39,7 +39,30 @@ export class TasksRepository extends Repository<Task> {
             .if(options.filter.due_date_to, query => query.where('due_date', '<=', options.filter.due_date_to))
             .if(options.filter.priority, query => query.where('priority', options.filter.priority))
             .if(options.include?.includes('category'), query => query.preload('category'))
-            .orderBy(options.sort.column, options.sort.direction)
+            .if(options.sort.column, query => {
+                if (options.sort.column === 'primary') {
+                    query.orderBy([
+                        {
+                            column: 'status',
+                            order: options.sort.direction
+                        },
+                        {
+                            column: 'priority',
+                            order: options.sort.direction
+                        },
+                        {
+                            column: 'due_date',
+                            order: options.sort.direction
+                        },
+                        {
+                            column: 'created_at',
+                            order: options.sort.direction
+                        }
+                    ])
+                } else {
+                    query.orderBy(options.sort.column, options.sort.direction)
+                }
+            })
             .paginate(options.page.number, options.page.size)
     }
 
