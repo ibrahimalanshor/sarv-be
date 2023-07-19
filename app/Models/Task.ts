@@ -13,8 +13,8 @@ export default class Task extends BaseModel {
   @column()
   public description: string
 
-  @column.dateTime()
-  public due_date: DateTime
+  @column()
+  public due_date: string
 
   @column()
   public priority: string

@@ -15,7 +15,7 @@ export class TasksRepository extends Repository<Task> {
     public async store(options: StoreOptions) {
         return await this.model.create({
             ...options.values,
-            ...(options.values.due_date ? { due_date: endOfDate(options.values.due_date) } : {})
+            ...(options.values.due_date ? { due_date: endOfDate(options.values.due_date).toString() } : {})
         })
     }
 
@@ -77,7 +77,10 @@ export class TasksRepository extends Repository<Task> {
     public async updateOne(options: UpdateOneOptions<HttpContextContract>) {
         return await super.updateOne({
             filter: options.filter,
-            values: options.values,
+            values: {
+                ...options.values,
+                ...(options.values.due_date ? { due_date: endOfDate(options.values.due_date).toString() } : { due_date: null })
+            },
             target: await this.getOne({ filter: options.filter, context: options.context })
         })
     }
