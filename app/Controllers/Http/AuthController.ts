@@ -33,7 +33,9 @@ export default class AuthController {
     }
 
     public async logout(context: HttpContextContract) {
-        return context.response.ok(await this.authService.logout({ context }))
+        await this.authService.logout({ context })
+        
+        return context.response.ok({ message: 'Success Logout' })
     }
 
     public async me(context: HttpContextContract) {
