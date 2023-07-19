@@ -40,7 +40,7 @@ export class TasksRepository extends Repository<Task> {
             .if(options.filter.priority, query => query.where('priority', options.filter.priority))
             .if(options.include?.includes('category'), query => query.preload('category'))
             .if(options.sort.column, query => {
-                if (options.sort.column === 'primary-sort') {
+                if (options.sort.column === 'primary') {
                     query.orderBy([
                         {
                             column: 'status',
