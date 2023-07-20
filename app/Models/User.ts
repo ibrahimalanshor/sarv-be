@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, afterCreate, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, hasMany, HasMany, computed } from '@ioc:Adonis/Lucid/Orm'
 import TaskCategory from './TaskCategory'
+import Config from '@ioc:Adonis/Core/Config'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -30,6 +31,11 @@ export default class User extends BaseModel {
 
   @hasMany(() => TaskCategory, { foreignKey: 'user_id' })
   public taskCategories: HasMany<typeof TaskCategory>
+
+  @computed()
+  public get photo_url() {
+    return `${Config.get('app.appUrl')}${this.photo_src}`
+  }
 
   @beforeSave()
   public static async hashPassword (user: User) {
