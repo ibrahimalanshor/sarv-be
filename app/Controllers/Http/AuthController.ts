@@ -6,6 +6,7 @@ import { UserService } from 'App/Services/UserService'
 import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import RegisterValidator from 'App/Validators/Auth/RegisterValidator'
 import UpdateMePhotoValidator  from 'App/Validators/Auth/UpdateMePhotoValidator'
+import UpdateMeEmailValidator  from 'App/Validators/Auth/UpdateMeEmailValidator'
 import UpdateMeValidator from 'App/Validators/Auth/UpdateMeValidator'
 
 @inject()
@@ -50,6 +51,17 @@ export default class AuthController {
 
     public async updateMe(context: HttpContextContract) {
         await context.request.validate(UpdateMeValidator)
+        
+        return context.response.ok(await this.userRepository.updateOne({
+            values: context.request.body(),
+            filter: {
+                id: context.auth.user?.id
+            }
+        }))
+    }
+
+    public async updateMeEmail(context: HttpContextContract) {
+        await context.request.validate(UpdateMeEmailValidator)
         
         return context.response.ok(await this.userRepository.updateOne({
             values: context.request.body(),
