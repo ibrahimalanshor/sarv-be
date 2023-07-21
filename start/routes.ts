@@ -35,6 +35,7 @@ Route.group(() => {
     Route.patch('/me', 'AuthController.updateMe').as('me.update')
     Route.patch('/me/photo', 'AuthController.updateMePhoto').as('me.update.photo')
     Route.patch('/me/email', 'AuthController.updateMeEmail').as('me.update.email')
+    Route.patch('/me/password', 'AuthController.updateMePassword').as('me.update.password')
   }).middleware(['auth'])
 
   Route.group(() => {
