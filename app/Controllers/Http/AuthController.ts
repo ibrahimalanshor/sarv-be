@@ -7,6 +7,7 @@ import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import RegisterValidator from 'App/Validators/Auth/RegisterValidator'
 import UpdateMePhotoValidator  from 'App/Validators/Auth/UpdateMePhotoValidator'
 import UpdateMeEmailValidator  from 'App/Validators/Auth/UpdateMeEmailValidator'
+import UpdateMePasswordValidator  from 'App/Validators/Auth/UpdateMePasswordValidator'
 import UpdateMeValidator from 'App/Validators/Auth/UpdateMeValidator'
 
 @inject()
@@ -65,6 +66,17 @@ export default class AuthController {
         
         return context.response.ok(await this.userRepository.updateOne({
             values: context.request.body(),
+            filter: {
+                id: context.auth.user?.id
+            }
+        }))
+    }
+
+    public async updateMePassword(context: HttpContextContract) {
+        await context.request.validate(UpdateMePasswordValidator)
+        
+        return context.response.ok(await this.userRepository.updateOne({
+            values: context.request.except(['password_confirmation']),
             filter: {
                 id: context.auth.user?.id
             }
