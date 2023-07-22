@@ -19,7 +19,6 @@ export default class UpdateTaskValidator {
         priority: schema.number.nullableAndOptional([
             rules.range(1, 3)
         ]),
-        status: schema.enum.nullableAndOptional(['todo', 'pending', 'in-progress', 'done']),
         task_category_id: schema.number.nullableAndOptional([
             rules.exists({
                 table: 'task_categories',
