@@ -79,7 +79,7 @@ export class TasksRepository extends Repository<Task> {
             filter: options.filter,
             values: {
                 ...options.values,
-                ...(options.values.due_date ? { due_date: endOfDate(options.values.due_date).toString() } : { due_date: null })
+                ...(options.values.due_date ? { due_date: endOfDate(options.values.due_date).toString() } : {})
             },
             target: await this.getOne({ filter: options.filter, context: options.context })
         })
