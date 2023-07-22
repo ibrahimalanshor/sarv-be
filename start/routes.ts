@@ -44,5 +44,7 @@ Route.group(() => {
 
   Route.group(() => {
     Route.resource('tasks', 'TasksController').except(['create', 'edit'])
+
+    Route.patch('/tasks/:id/status', 'TasksController.updateStatus').as('tasks.update.status')
   }).middleware(['auth', 'resource'])
 }).prefix('/api').as('api')
