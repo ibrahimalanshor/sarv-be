@@ -47,4 +47,8 @@ Route.group(() => {
 
     Route.patch('/tasks/:id/status', 'TaskController.updateStatus').as('tasks.update.status')
   }).middleware(['auth', 'resource'])
+
+  Route.group(() => {
+    Route.get('/overview/task', 'OverviewController.getTaskOverview').as('overview.task')
+  }).middleware('auth')
 }).prefix('/api').as('api')
