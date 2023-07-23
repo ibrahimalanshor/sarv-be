@@ -13,9 +13,7 @@ export default class UpdateTaskValidator {
             rules.required(),
         ]),
         description: schema.string.nullableAndOptional(),
-        due_date: schema.date.nullableAndOptional({
-            format: 'sql'
-        }),
+        due_date: schema.date.nullableAndOptional(),
         priority: schema.number.nullableAndOptional([
             rules.range(1, 3)
         ]),
