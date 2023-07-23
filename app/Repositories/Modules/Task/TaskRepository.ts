@@ -9,7 +9,7 @@ import { parseBoolean } from 'App/Utils/parse-type.util'
 import { endOfDate } from 'App/Utils/date.util';
 
 @inject()
-export class TasksRepository extends Repository<Task> {
+export class TaskRepository extends Repository<Task> {
     public model = Task
 
     public async store(options: StoreOptions) {

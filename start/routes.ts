@@ -31,11 +31,11 @@ Route.group(() => {
   Route.group(() => {
     Route.post('/logout', 'AuthController.logout').as('logout')
 
-    Route.get('/me', 'AuthController.me').as('me')
-    Route.patch('/me', 'AuthController.updateMe').as('me.update')
-    Route.patch('/me/photo', 'AuthController.updateMePhoto').as('me.update.photo')
-    Route.patch('/me/email', 'AuthController.updateMeEmail').as('me.update.email')
-    Route.patch('/me/password', 'AuthController.updateMePassword').as('me.update.password')
+    Route.get('/me', 'MeController.getMe').as('me')
+    Route.patch('/me', 'MeController.updateMe').as('me.update')
+    Route.patch('/me/photo', 'MeController.updateMePhoto').as('me.update.photo')
+    Route.patch('/me/email', 'MeController.updateMeEmail').as('me.update.email')
+    Route.patch('/me/password', 'MeController.updateMePassword').as('me.update.password')
   }).middleware(['auth'])
 
   Route.group(() => {
@@ -43,8 +43,12 @@ Route.group(() => {
   }).middleware(['auth', 'resource'])
 
   Route.group(() => {
-    Route.resource('tasks', 'TasksController').except(['create', 'edit'])
+    Route.resource('tasks', 'TaskController').except(['create', 'edit'])
 
-    Route.patch('/tasks/:id/status', 'TasksController.updateStatus').as('tasks.update.status')
+    Route.patch('/tasks/:id/status', 'TaskController.updateStatus').as('tasks.update.status')
   }).middleware(['auth', 'resource'])
+
+  Route.group(() => {
+    Route.get('/overview/task', 'OverviewController.getTaskOverview').as('overview.task')
+  }).middleware('auth')
 }).prefix('/api').as('api')

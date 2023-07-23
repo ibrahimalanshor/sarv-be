@@ -1,13 +1,13 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { inject } from '@adonisjs/fold'
-import { TasksRepository } from 'App/Repositories/Modules/TasksRepository'
+import { TaskRepository } from 'App/Repositories/Modules/Task/TaskRepository'
 import CreateTaskValidator from 'App/Validators/Task/CreateTaskValidator'
 import UpdateTaskValidator from 'App/Validators/Task/UpdateTaskValidator'
 import UpdateTaskStatusValidator from 'App/Validators/Task/UpdateTaskStatusValidator'
 
 @inject()
-export default class TasksController {
-  constructor(public repository: TasksRepository) {}
+export default class TaskController {
+  constructor(public repository: TaskRepository) {}
 
   public async index(ctx: HttpContextContract) {
     const { page, sort, filter, include } = ctx.request.qs()
