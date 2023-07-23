@@ -6,7 +6,6 @@ import { inject } from '@adonisjs/fold';
 import Task from 'App/Models/Task';
 import { isNullOrUndefined } from 'App/Utils/check-type.util'
 import { parseBoolean } from 'App/Utils/parse-type.util'
-import { endOfDate } from 'App/Utils/date.util';
 
 @inject()
 export class TaskRepository extends Repository<Task> {

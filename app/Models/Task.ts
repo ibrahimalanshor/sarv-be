@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column, scope } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import TaskCategory from './TaskCategory'
+import { endOfDate } from 'App/Utils/date.util'
 
 export default class Task extends BaseModel {
   @column({ isPrimary: true })
@@ -46,10 +47,10 @@ export default class Task extends BaseModel {
 
   public static isDue = scope((query, value: boolean) => {
     if (value) {
-      query.where('due_date', '<', new Date)
+      query.where('due_date', '<=', endOfDate(new Date().toISOString()).toString())
     } else {
       query.where(query => {
-        query.where('due_date', '>', new Date).orWhereNotNull('due_date')
+        query.where('due_date', '>=', endOfDate(new Date().toISOString()).toString()).orWhereNotNull('due_date')
       })
     }
   })
