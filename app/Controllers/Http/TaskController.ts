@@ -4,12 +4,15 @@ import { TaskRepository } from 'App/Repositories/Modules/Task/TaskRepository'
 import CreateTaskValidator from 'App/Validators/Task/CreateTaskValidator'
 import UpdateTaskValidator from 'App/Validators/Task/UpdateTaskValidator'
 import UpdateTaskStatusValidator from 'App/Validators/Task/UpdateTaskStatusValidator'
+import GetTaskValidator from 'App/Validators/Task/GetTaskValidator'
 
 @inject()
 export default class TaskController {
   constructor(public repository: TaskRepository) {}
 
   public async index(ctx: HttpContextContract) {
+    await ctx.request.validate(GetTaskValidator)
+
     const { page, sort, filter, include } = ctx.request.qs()
     
     return ctx.response.ok(await this.repository.getAll({ sort, page, filter, include, context: ctx }))
