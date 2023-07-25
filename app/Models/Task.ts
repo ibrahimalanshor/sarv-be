@@ -77,7 +77,7 @@ export default class Task extends BaseModel {
     }
   })
 
-  public static is_parent = scope((query, value: boolean) => {
+  public static isParent = scope((query, value: boolean) => {
     if (value) {
       query.whereNull('parent_id')
     } else {

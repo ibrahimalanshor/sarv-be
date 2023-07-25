@@ -29,7 +29,7 @@ export class TaskRepository extends Repository<Task> {
                 }
 
                 if (isNullOrUndefined(options.filter.is_parent, { reverse: true })) {
-                    scopes.is_parent(parseBoolean(options.filter.is_parent))
+                    scopes.isParent(parseBoolean(options.filter.is_parent))
                 }
             })
             .if(options.filter.name, query => query.whereILike('name', `%${options.filter.name}%`))
