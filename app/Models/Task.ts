@@ -5,6 +5,8 @@ import TaskCategory from './TaskCategory'
 import { endOfDate } from 'App/Utils/date.util'
 
 export default class Task extends BaseModel {
+  public serializeExtras = true
+
   @column({ isPrimary: true })
   public id: number
 
