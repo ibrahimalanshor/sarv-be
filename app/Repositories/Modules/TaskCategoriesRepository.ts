@@ -13,6 +13,11 @@ export class TaskCategoriesRepository extends Repository<TaskCategory> {
         return await this.model.query()
             .withScopes((scopes) => scopes.visibleTo(options.context?.auth.user as User))
             .if(options.filter.name, query => query.whereILike('name', `%${options.filter.name}%`))
+            .if(options.include?.includes('tasks_count'), query => query.withCount('tasks'))
+            .if(options.include?.includes('tasks_done_count'), query => query.withCount('tasks', query => {
+                query.where('status', 'done')
+                query.as('tasks_done_count')
+            }))
             .orderBy(options.sort.column, options.sort.direction)
             .paginate(options.page.number, options.page.size)
     }
@@ -21,6 +26,11 @@ export class TaskCategoriesRepository extends Repository<TaskCategory> {
         return await this.model.query()
             .withScopes(scopes => scopes.visibleTo(options.context?.auth.user as User))
             .where('id', options.filter.id)
+            .if(options.include?.includes('tasks_count'), query => query.withCount('tasks'))
+            .if(options.include?.includes('tasks_done_count'), query => query.withCount('tasks', query => {
+                query.where('status', 'done')
+                query.as('tasks_done_count')
+            }))
             .firstOrFail()
     }
 

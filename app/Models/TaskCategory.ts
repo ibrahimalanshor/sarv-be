@@ -4,6 +4,8 @@ import User from './User'
 import Task from './Task'
 
 export default class TaskCategory extends BaseModel {
+  public serializeExtras = true
+
   @column({ isPrimary: true })
   public id: number
 
@@ -22,8 +24,8 @@ export default class TaskCategory extends BaseModel {
   @belongsTo(() => User, { localKey: 'user_id' })
   public user: BelongsTo<typeof User>
 
-  @hasMany(() => Task, { foreignKey: 'task_category_id', localKey: 'id' })
-  public taskCategories: HasMany<typeof Task>
+  @hasMany(() => Task, { localKey: 'id', foreignKey: 'task_category_id' })
+  public tasks: HasMany<typeof Task>
 
   public static visibleTo = scope((query, user: User) => {
     query.where('user_id', user.id)
