@@ -5,13 +5,15 @@ export default class extends BaseSchema {
 
   public async up () {
     this.schema.alterTable(this.tableName, (table) => {
-      table.enum('status', ['todo', 'pending', 'in-progress', 'done']).defaultTo('todo')
+      table.integer('parent_id').unsigned().nullable()
+      table.foreign('parent_id').references('tasks.id')
     })
   }
 
   public async down () {
-    this.schema.alterTable(this.tableName, (table) => {
-      table.dropColumn('status')
+    this.schema.alterTable(this.tableName, table => {
+      table.dropForeign('parent_id')
+      table.dropChecks('parent_id')
     })
   }
 }

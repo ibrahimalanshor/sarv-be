@@ -26,6 +26,16 @@ export default class CreateTaskValidator {
                     user_id: this.refs.user.value?.id
                 }
             })
+        ]),
+        parent_id: schema.number.nullableAndOptional([
+            rules.exists({
+                table: 'tasks',
+                column: 'id',
+                where: {
+                    user_id: this.refs.user.value?.id,
+                    parent_id: null
+                }
+            })
         ])
     })
 
