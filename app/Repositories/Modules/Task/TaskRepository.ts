@@ -25,11 +25,16 @@ export class TaskRepository extends Repository<Task> {
                 }
 
                 if (isNullOrUndefined(options.filter.is_active, { reverse: true })) {
-                    scopes.active(parseBoolean(options.filter.is_active))
+                    scopes.isActive(parseBoolean(options.filter.is_active))
+                }
+
+                if (isNullOrUndefined(options.filter.is_parent, { reverse: true })) {
+                    scopes.is_parent(parseBoolean(options.filter.is_parent))
                 }
             })
             .if(options.filter.name, query => query.whereILike('name', `%${options.filter.name}%`))
             .if(options.filter.task_category_id, query => query.where('task_category_id', options.filter.task_category_id))
+            .if(options.filter.parent_id, query => query.where('parent_id', options.filter.parent_id))
             .if(options.filter.status, query => query.where('status', options.filter.status))
             .if(options.filter.statuses, query => query.whereIn('status', options.filter.statuses))
             .if(options.filter.due_date_from, query => query.where('due_date', '>=', options.filter.due_date_from))
