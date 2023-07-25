@@ -9,9 +9,9 @@ export default class TaskCategoriesController {
   constructor(public repository: TaskCategoriesRepository) {}
 
   public async index(ctx: HttpContextContract) {
-    const { page, sort, filter } = ctx.request.qs()
+    const { page, sort, filter, include } = ctx.request.qs()
     
-    return ctx.response.ok(await this.repository.getAll({ sort, page, filter, context: ctx }))
+    return ctx.response.ok(await this.repository.getAll({ sort, page, filter, include, context: ctx }))
   }
 
   public async store(ctx: HttpContextContract) {
@@ -26,10 +26,13 @@ export default class TaskCategoriesController {
   }
 
   public async show(ctx: HttpContextContract) {
+    const { include } = ctx.request.qs()
+
     return ctx.response.ok(await this.repository.getOne({
       filter: {
         id: ctx.request.param('id')
       },
+      include,
       context: ctx
     }))
   }
