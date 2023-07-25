@@ -41,6 +41,11 @@ export class TaskRepository extends Repository<Task> {
             .if(options.filter.due_date_to, query => query.where('due_date', '<=', options.filter.due_date_to))
             .if(options.filter.priority, query => query.where('priority', options.filter.priority))
             .if(options.include?.includes('category'), query => query.preload('category'))
+            .if(options.include?.includes('children_count'), query => query.withCount('children'))
+            .if(options.include?.includes('children_done_count'), query => query.withCount('children', query => {
+                query.where('status', 'done')
+                query.as('children_done_count')
+            }))
             .if(options.sort.column, query => {
                 if (options.sort.column === 'primary') {
                     query.orderBy([
@@ -73,6 +78,11 @@ export class TaskRepository extends Repository<Task> {
             .withScopes(scopes => scopes.visibleTo(options.context?.auth.user as User))
             .where('id', options.filter.id)
             .if(options.include?.includes('category'), query => query.preload('category'))
+            .if(options.include?.includes('children_count'), query => query.withCount('children'))
+            .if(options.include?.includes('children_done_count'), query => query.withCount('children', query => {
+                query.where('status', 'done')
+                query.as('children_done_count')
+            }))
             .firstOrFail()
     }
 
