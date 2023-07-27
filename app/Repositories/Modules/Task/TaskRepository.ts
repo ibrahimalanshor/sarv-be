@@ -78,6 +78,7 @@ export class TaskRepository extends Repository<Task> {
             .withScopes(scopes => scopes.visibleTo(options.context?.auth.user as User))
             .where('id', options.filter.id)
             .if(options.include?.includes('category'), query => query.preload('category'))
+            .if(options.include?.includes('parent'), query => query.preload('parent'))
             .if(options.include?.includes('children_count'), query => query.withCount('children'))
             .if(options.include?.includes('children_done_count'), query => query.withCount('children', query => {
                 query.where('status', 'done')
