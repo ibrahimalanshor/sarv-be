@@ -30,6 +30,11 @@ Route.group(() => {
 
   Route.get('/verify-email/:email', 'AuthController.verifyEmail').as('verify-email').middleware('signed')
   Route.post('/send-verify-email', 'AuthController.sendVerifyEmail').as('send-verify-email').middleware(['auth', 'unverified'])
+  
+  Route.group(() => {
+    Route.post('/forgot', 'PasswordController.forgot').as('forgot')
+    Route.post('/reset', 'PasswordController.reset').as('reset')
+  }).prefix('/password').as('password')
 
   Route.group(() => {
     Route.post('/logout', 'AuthController.logout').as('logout')
