@@ -27,7 +27,8 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.post('/login', 'AuthController.login').as('login')
   Route.post('/register', 'AuthController.register').as('register')
-  Route.post('/verify-email/:email', 'AuthController.verifyEmail').as('verify-email')
+
+  Route.get('/verify-email/:email', 'AuthController.verifyEmail').as('verify-email').middleware('signed')
 
   Route.group(() => {
     Route.post('/logout', 'AuthController.logout').as('logout')
