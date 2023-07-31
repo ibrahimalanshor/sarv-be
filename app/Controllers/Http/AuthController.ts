@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/fold'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Event from '@ioc:Adonis/Core/Event'
 import { AuthService } from 'App/Services/AuthService'
 import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import RegisterValidator from 'App/Validators/Auth/RegisterValidator'
@@ -35,9 +36,17 @@ export default class AuthController {
     }
 
     public async verifyEmail(context: HttpContextContract) {
-        return context.response.ok(await this.authService.verifyEmail({
+        await this.authService.verifyEmail({
             email: context.request.param('email'),
             context
-        }))
+        })
+
+        return context.response.ok({ message: 'Success verify email' })
+    }
+
+    public async sendVerifyEmail(context: HttpContextContract) {
+        await Event.emit('send-verify-email:user', context.auth.use('api').user)
+
+        return context.response.ok({ message: 'Success send verification email' })
     }
 }
