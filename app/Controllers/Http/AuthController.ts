@@ -33,4 +33,11 @@ export default class AuthController {
         
         return context.response.ok({ message: 'Success Logout' })
     }
+
+    public async verifyEmail(context: HttpContextContract) {
+        return context.response.ok(await this.authService.verifyEmail({
+            email: context.request.param('email'),
+            context
+        }))
+    }
 }
