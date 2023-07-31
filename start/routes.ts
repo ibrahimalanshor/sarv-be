@@ -29,6 +29,7 @@ Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
 
   Route.get('/verify-email/:email', 'AuthController.verifyEmail').as('verify-email').middleware('signed')
+  Route.post('/send-verify-email', 'AuthController.sendVerifyEmail').as('send-verify-email').middleware(['auth', 'unverified'])
 
   Route.group(() => {
     Route.post('/logout', 'AuthController.logout').as('logout')
