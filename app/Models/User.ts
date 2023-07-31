@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, hasMany, HasMany, computed, afterCreate } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, hasMany, HasMany, computed, scope } from '@ioc:Adonis/Lucid/Orm'
 import Event from '@ioc:Adonis/Core/Event'
 import TaskCategory from './TaskCategory'
 import Config from '@ioc:Adonis/Core/Config'
@@ -31,7 +31,7 @@ export default class User extends BaseModel {
   public updatedAt: DateTime
 
   @column.dateTime()
-  public verifiedAt: DateTime
+  public verifiedAt: DateTime | null
 
   @hasMany(() => TaskCategory, { foreignKey: 'user_id' })
   public taskCategories: HasMany<typeof TaskCategory>
@@ -56,7 +56,17 @@ export default class User extends BaseModel {
   @beforeSave()
   public static async sendVerifyEmail (user: User) {
     if (user.$dirty.email) {
+      user.verifiedAt = null
+
       Event.emit('send-verify-email:user', user)
     }
   }
+
+  public static isVerified = scope((query, value: boolean) => {
+    if (value) {
+      query.whereNotNull('verified_at')
+    } else {
+      query.whereNull('verified_at')
+    }
+  })
 }
