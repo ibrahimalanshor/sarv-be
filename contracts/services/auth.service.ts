@@ -24,8 +24,3 @@ export interface RegisterOptions<Context> {
 export interface LogoutOptions<Context> {
     context: Context,
 }
-
-export interface VerifyEmailOptions<Context> {
-    email: string,
-    context: Context,
-}

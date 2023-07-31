@@ -30,7 +30,10 @@ export default class VerifyEmail extends BaseMailer {
       .from(Config.get('mail.from'))
       .to(this.user.email)
       .htmlView('emails/verify_email', {
-        url: Route.makeSignedUrl('api.verify-email', { email: this.user.email }, {
+        url: Route.makeSignedUrl('api.email.verify', {}, {
+          qs: {
+            email: this.user.email 
+          },
           expiresIn: '30m',
           prefixUrl: Config.get('app.appUrl')
         })

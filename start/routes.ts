@@ -27,10 +27,12 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.post('/login', 'AuthController.login').as('login')
   Route.post('/register', 'AuthController.register').as('register')
-
-  Route.get('/verify-email/:email', 'AuthController.verifyEmail').as('verify-email').middleware('signed')
-  Route.post('/send-verify-email', 'AuthController.sendVerifyEmail').as('send-verify-email').middleware(['auth', 'unverified'])
   
+  Route.group(() => {
+    Route.post('/send', 'EmailController.send').as('send').middleware(['auth', 'unverified'])
+    Route.get('/verify', 'EmailController.verify').as('verify').middleware('signed')
+  }).prefix('/email').as('email')
+
   Route.group(() => {
     Route.post('/forgot', 'PasswordController.forgot').as('forgot')
     Route.post('/reset', 'PasswordController.reset').as('reset')
