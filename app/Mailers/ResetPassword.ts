@@ -1,7 +1,7 @@
 import { BaseMailer, MessageContract } from '@ioc:Adonis/Addons/Mail'
 import Config from '@ioc:Adonis/Core/Config'
 import Route from '@ioc:Adonis/Core/Route'
-import User from 'App/Models/User'
+import { default as ResetPasswordModel } from 'App/Models/ResetPassword'
 
 export default class ResetPassword extends BaseMailer {
   /**
@@ -13,7 +13,7 @@ export default class ResetPassword extends BaseMailer {
    */
   // public mailer = this.mail.use()
 
-  constructor (private user: User) {
+  constructor (private resetPassword: ResetPasswordModel) {
     super()
   }
 
@@ -25,15 +25,13 @@ export default class ResetPassword extends BaseMailer {
    * also be async.
    */
   public prepare(message: MessageContract) {
+    console.log(`${Config.get('auth.resetPasswordUrl')}?email=${this.resetPassword.user.email}&token=${this.resetPassword.token}`)
     message
       .subject('Reset Password')
       .from(Config.get('mail.from'))
-      .to(this.user.email)
+      .to(this.resetPassword.user.email)
       .htmlView('emails/reset_password', {
-        url: Route.makeSignedUrl('api.verify-email', { email: this.user.email }, {
-          expiresIn: '30m',
-          prefixUrl: Config.get('app.appUrl')
-        })
+        url: `${Config.get('app.resetPasswordUrl')}?email=${this.resetPassword.user.email}&token=${this.resetPassword.token}`
       })
   }
 }
