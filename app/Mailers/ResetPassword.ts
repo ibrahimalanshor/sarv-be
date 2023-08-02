@@ -1,6 +1,5 @@
 import { BaseMailer, MessageContract } from '@ioc:Adonis/Addons/Mail'
 import Config from '@ioc:Adonis/Core/Config'
-import Route from '@ioc:Adonis/Core/Route'
 import { default as ResetPasswordModel } from 'App/Models/ResetPassword'
 
 export default class ResetPassword extends BaseMailer {

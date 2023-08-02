@@ -17,4 +17,8 @@ export default class PasswordController {
 
         return context.response.ok({ message: 'Success send reset password url' })
     }
+
+    public async reset(context: HttpContextContract) {
+        await this.passwordService
+    }
 }

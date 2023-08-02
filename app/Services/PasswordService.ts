@@ -3,7 +3,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { string } from '@ioc:Adonis/Core/Helpers'
 import ResetPassword from "App/Mailers/ResetPassword";
 import { UserRepository } from "App/Repositories/Modules/UserRepository";
-import { ForgotPasswordOptions } from "Contracts/services/password.service";
+import { ForgotPasswordOptions, ResetPasswordOptions } from "Contracts/services/password.service";
 import { ResetPasswordRepository } from "App/Repositories/Modules/ResetPasswordRepoistory";
 
 @inject()
@@ -26,5 +26,21 @@ export class PasswordServive {
         await resetPassword.load('user')
 
         await new ResetPassword(resetPassword).sendLater()
+    }
+
+    public async reset(options: ResetPasswordOptions<HttpContextContract>) {
+        const resetPassword = await this.resetPasswordRepository.getOne({
+            filter: {
+                token: options.token
+            }
+        })
+
+        await resetPassword.load('user')
+        
+        return await this.userRepository.updateOne({
+            filter: {
+                id: resetPassword.
+            }
+        })
     }
 }
