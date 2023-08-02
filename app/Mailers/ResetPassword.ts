@@ -1,9 +1,8 @@
 import { BaseMailer, MessageContract } from '@ioc:Adonis/Addons/Mail'
 import Config from '@ioc:Adonis/Core/Config'
-import Route from '@ioc:Adonis/Core/Route'
-import User from 'App/Models/User'
+import { default as ResetPasswordModel } from 'App/Models/ResetPassword'
 
-export default class VerifyEmail extends BaseMailer {
+export default class ResetPassword extends BaseMailer {
   /**
    * WANT TO USE A DIFFERENT MAILER?
    *
@@ -13,30 +12,25 @@ export default class VerifyEmail extends BaseMailer {
    */
   // public mailer = this.mail.use()
 
-  constructor (private user: User) {
+  constructor (private resetPassword: ResetPasswordModel) {
     super()
   }
 
   /**
    * The prepare method is invoked automatically when you run
-   * "VerifyEmail.send".
+   * "ResetPassword.send".
    *
    * Use this method to prepare the email message. The method can
    * also be async.
    */
   public prepare(message: MessageContract) {
+    console.log(`${Config.get('auth.resetPasswordUrl')}?email=${this.resetPassword.user.email}&token=${this.resetPassword.token}`)
     message
-      .subject('Email Verification')
+      .subject('Reset Password')
       .from(Config.get('mail.from'))
-      .to(this.user.email)
-      .htmlView('emails/verify_email', {
-        url: Route.makeSignedUrl('api.email.verify', {}, {
-          qs: {
-            email: this.user.email 
-          },
-          expiresIn: '30m',
-          prefixUrl: Config.get('app.appUrl')
-        })
+      .to(this.resetPassword.user.email)
+      .htmlView('emails/reset_password', {
+        url: `${Config.get('app.resetPasswordUrl')}?email=${this.resetPassword.user.email}&token=${this.resetPassword.token}`
       })
   }
 }

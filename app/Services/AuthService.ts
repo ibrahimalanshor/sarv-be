@@ -1,8 +1,7 @@
 import { inject } from '@adonisjs/fold';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { AuthResult, LoginOptions, LogoutOptions, RegisterOptions, VerifyEmailOptions } from "Contracts/services/auth.service";
+import { AuthResult, LoginOptions, LogoutOptions, RegisterOptions } from "Contracts/services/auth.service";
 import { UserRepository } from 'App/Repositories/Modules/UserRepository'
-import { getNow } from 'App/Utils/date.util';
 
 @inject()
 export class AuthService {
@@ -31,17 +30,5 @@ export class AuthService {
 
     public async logout(options: LogoutOptions<HttpContextContract>) {
         await options.context.auth.use('api').logout()
-    }
-
-    public async verifyEmail(options: VerifyEmailOptions<HttpContextContract>) {
-        return await this.userRepository.updateOne({
-            values: {
-                verified_at: getNow()
-            },
-            filter: {
-                email: options.email,
-                is_verified: false
-            }
-        })
     }
 }

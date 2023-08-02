@@ -234,3 +234,4 @@ export const profiler: ProfilerConfig = {
 export const validator: ValidatorConfig = {}
 
 export const appUrl = Env.get('APP_URL')
+export const resetPasswordUrl = Env.get('RESET_PASSWORD_URL')
