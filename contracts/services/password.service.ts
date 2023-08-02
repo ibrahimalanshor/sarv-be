@@ -5,5 +5,6 @@ export interface ForgotPasswordOptions<Context> {
 
 export interface ResetPasswordOptions<Context> {
     token: string,
+    password: string,
     context: Context,
 }

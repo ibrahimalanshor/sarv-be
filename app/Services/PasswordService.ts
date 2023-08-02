@@ -34,12 +34,18 @@ export class PasswordServive {
                 token: options.token
             }
         })
-
-        await resetPassword.load('user')
+        await this.resetPasswordRepository.deleteOne({
+            filter: {
+                token: options.token
+            }
+        })
         
         return await this.userRepository.updateOne({
             filter: {
-                id: resetPassword.
+                id: resetPassword.user_id
+            },
+            values: {
+                password: options.password
             }
         })
     }
