@@ -55,7 +55,6 @@ export default class User extends BaseModel {
 
   @beforeCreate()
   public static async sendVerifyEmailOnCreate (user: User) {
-    console.log(user.verifiedAt)
     if (user.verifiedAt === null) {
       Event.emit('send-verify-email:user', user)
     }
