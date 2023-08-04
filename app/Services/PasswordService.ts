@@ -36,7 +36,8 @@ export class PasswordServive {
     public async reset(options: ResetPasswordOptions<HttpContextContract>) {
         const resetPassword = await this.resetPasswordRepository.getOne({
             filter: {
-                token: options.token
+                token: options.token,
+                is_expired: false
             }
         })
         await this.resetPasswordRepository.deleteOne({
