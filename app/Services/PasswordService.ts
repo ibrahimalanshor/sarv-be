@@ -16,6 +16,11 @@ export class PasswordServive {
                 email: options.email,
             }
         })
+        await this.resetPasswordRepository.deleteMany({
+            filter: {
+                user_id: user.id
+            }
+        })
         const resetPassword = await this.resetPasswordRepository.store({
             values: {
                 token: string.generateRandom(32),
