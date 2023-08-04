@@ -1,13 +1,11 @@
-import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
+import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CreateTaskStatusValidator {
+export default class UpdateMeValidator {
     constructor(protected ctx: HttpContextContract) {}
 
     public schema = schema.create({
-        name: schema.string({}, [
-            rules.required(),
-        ])
+        name: schema.string.nullable(),
     })
 
     public messages: CustomMessages = {}

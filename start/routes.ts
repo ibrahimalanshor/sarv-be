@@ -29,14 +29,40 @@ Route.group(() => {
   Route.post('/register', 'AuthController.register').as('register')
 
   Route.group(() => {
+    Route.post('/google', 'AuthSocialController.google').as('google')
+  }).prefix('/auth-social').as('auth-social')
+  
+  Route.group(() => {
+    Route.post('/send', 'EmailController.send').as('send').middleware(['auth', 'unverified']).middleware('throttle:resend-verification')
+    Route.get('/verify', 'EmailController.verify').as('verify').middleware('signed')
+  }).prefix('/email').as('email')
+
+  Route.group(() => {
+    Route.post('/forgot', 'PasswordController.forgot').as('forgot').middleware('throttle:forgot-password')
+    Route.post('/reset', 'PasswordController.reset').as('reset')
+  }).prefix('/password').as('password')
+
+  Route.group(() => {
+    Route.post('/logout', 'AuthController.logout').as('logout')
+
+    Route.get('/me', 'MeController.getMe').as('me')
+    Route.patch('/me', 'MeController.updateMe').as('me.update')
+    Route.patch('/me/photo', 'MeController.updateMePhoto').as('me.update.photo')
+    Route.patch('/me/email', 'MeController.updateMeEmail').as('me.update.email')
+    Route.patch('/me/password', 'MeController.updateMePassword').as('me.update.password')
+  }).middleware(['auth'])
+
+  Route.group(() => {
     Route.resource('task-categories', 'TaskCategoriesController').except(['create', 'edit'])
   }).middleware(['auth', 'resource'])
 
   Route.group(() => {
-    Route.resource('task-statuses', 'TaskStatusesController').except(['create', 'edit'])
+    Route.resource('tasks', 'TaskController').except(['create', 'edit'])
+
+    Route.patch('/tasks/:id/status', 'TaskController.updateStatus').as('tasks.update.status')
   }).middleware(['auth', 'resource'])
 
   Route.group(() => {
-    Route.resource('tasks', 'TasksController').except(['create', 'edit'])
-  }).middleware(['auth', 'resource'])
+    Route.get('/overview/task', 'OverviewController.getTaskOverview').as('overview.task')
+  }).middleware('auth')
 }).prefix('/api').as('api')

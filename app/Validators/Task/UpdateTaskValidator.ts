@@ -12,18 +12,14 @@ export default class UpdateTaskValidator {
         name: schema.string({}, [
             rules.required(),
         ]),
+        description: schema.string.nullableAndOptional(),
+        due_date: schema.date.nullableAndOptional(),
+        priority: schema.number.nullableAndOptional([
+            rules.range(1, 3)
+        ]),
         task_category_id: schema.number.nullableAndOptional([
             rules.exists({
                 table: 'task_categories',
-                column: 'id',
-                where: {
-                    user_id: this.refs.user.value?.id
-                }
-            })
-        ]),
-        task_status_id: schema.number.nullableAndOptional([
-            rules.exists({
-                table: 'task_statuses',
                 column: 'id',
                 where: {
                     user_id: this.refs.user.value?.id

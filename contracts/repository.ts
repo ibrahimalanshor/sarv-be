@@ -8,7 +8,7 @@ export interface GetAllOptions<Context = {}> {
         size: number
     },
     filter: Record<string, any>,
-    include?: string,
+    include?: string[],
     context?: Context
 }
 
@@ -18,12 +18,12 @@ export interface StoreOptions {
 
 export interface GetOneOptions<Context = {}> {
     filter: Record<string, any>,
-    include?: string,
+    include?: string[],
     context?: Context
 }
 
 export interface UpdateOneOptions<Context = {}> {
-    filter: Record<string, any>
+    filter?: Record<string, any>
     values: Record<string, any>
     context?: Context
 }
@@ -31,4 +31,8 @@ export interface UpdateOneOptions<Context = {}> {
 export interface DeleteOneOptions<Context = {}> {
     filter: Record<string, any>
     context?: Context
+}
+
+export interface DeleteManyOptions {
+    filter: Record<string, any>
 }

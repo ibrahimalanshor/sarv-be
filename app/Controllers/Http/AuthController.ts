@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/fold'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AuthService from 'App/Services/AuthService'
+import { AuthService } from 'App/Services/AuthService'
 import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import RegisterValidator from 'App/Validators/Auth/RegisterValidator'
 
@@ -26,5 +26,11 @@ export default class AuthController {
             user: context.request.except(['password_confirmation']),
             context
         }))
+    }
+
+    public async logout(context: HttpContextContract) {
+        await this.authService.logout({ context })
+        
+        return context.response.ok({ message: 'Success Logout' })
     }
 }

@@ -20,3 +20,17 @@ export interface RegisterOptions<Context> {
     context: Context,
     user: Partial<User>
 }
+
+export interface LogoutOptions<Context> {
+    context: Context,
+}
+
+export interface LoginSocialOptions<Context> {
+    user: {
+        email: string
+        name: string
+        emailVerificationState: string
+        avatarUrl: string
+    },
+    context: Context
+}

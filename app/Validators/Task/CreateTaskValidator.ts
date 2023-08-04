@@ -12,7 +12,13 @@ export default class CreateTaskValidator {
         name: schema.string({}, [
             rules.required(),
         ]),
-        task_category_id: schema.number([
+        description: schema.string.nullableAndOptional(),
+        due_date: schema.date.nullableAndOptional(),
+        priority: schema.number.nullableAndOptional([
+            rules.range(1, 3)
+        ]),
+        status: schema.enum.nullableAndOptional(['todo', 'pending', 'in-progress', 'done']),
+        task_category_id: schema.number.nullableAndOptional([
             rules.exists({
                 table: 'task_categories',
                 column: 'id',
@@ -21,12 +27,13 @@ export default class CreateTaskValidator {
                 }
             })
         ]),
-        task_status_id: schema.number.nullableAndOptional([
+        parent_id: schema.number.nullableAndOptional([
             rules.exists({
-                table: 'task_statuses',
+                table: 'tasks',
                 column: 'id',
                 where: {
-                    user_id: this.refs.user.value?.id
+                    user_id: this.refs.user.value?.id,
+                    parent_id: null
                 }
             })
         ])
