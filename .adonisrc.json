@@ -23,7 +23,8 @@
         "web"
       ]
     },
-    "./start/events"
+    "./start/events",
+    "./start/limiter"
   ],
   "providers": [
     "./providers/AppProvider",
@@ -32,7 +33,9 @@
     "@adonisjs/lucid",
     "@adonisjs/mail",
     "@adonisjs/view",
-    "@adonisjs/ally"
+    "@adonisjs/ally",
+    "@adonisjs/limiter",
+    "@adonisjs/redis"
   ],
   "aceProviders": [
     "@adonisjs/repl"
