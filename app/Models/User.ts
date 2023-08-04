@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, hasMany, HasMany, computed, scope } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, hasMany, HasMany, computed, scope, beforeUpdate, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
 import Event from '@ioc:Adonis/Core/Event'
 import TaskCategory from './TaskCategory'
 import Config from '@ioc:Adonis/Core/Config'
@@ -53,8 +53,16 @@ export default class User extends BaseModel {
     }
   }
 
-  @beforeSave()
-  public static async sendVerifyEmail (user: User) {
+  @beforeCreate()
+  public static async sendVerifyEmailOnCreate (user: User) {
+    console.log(user.verifiedAt)
+    if (user.verifiedAt === null) {
+      Event.emit('send-verify-email:user', user)
+    }
+  }
+
+  @beforeUpdate()
+  public static async sendVerifyEmailOnUpdate (user: User) {
     if (user.$dirty.email) {
       user.verifiedAt = null
 
