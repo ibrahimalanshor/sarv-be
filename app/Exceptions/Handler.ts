@@ -35,6 +35,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return ctx.response.notFound({ message: 'Resource Not Found' })
     }
 
+    if (error.code === 'ERR_NON_2XX_3XX_RESPONSE') {
+      return ctx.response.unauthorized({ message: 'Invalid token' })
+    }
+
     return super.handle(error, ctx)
   }
 }

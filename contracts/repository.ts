@@ -23,7 +23,7 @@ export interface GetOneOptions<Context = {}> {
 }
 
 export interface UpdateOneOptions<Context = {}> {
-    filter: Record<string, any>
+    filter?: Record<string, any>
     values: Record<string, any>
     context?: Context
 }

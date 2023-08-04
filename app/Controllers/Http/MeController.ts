@@ -18,7 +18,7 @@ export default class MeController {
     public async updateMePhoto(context: HttpContextContract) {
         await context.request.validate(UpdateMePhotoValidator)
 
-        return context.response.ok(await this.userService.updateUserPhoto({ context }))
+        return context.response.ok(await this.userService.updatePhoto({ context }))
     }
 
     public async updateMe(context: HttpContextContract) {

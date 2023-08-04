@@ -27,6 +27,10 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.post('/login', 'AuthController.login').as('login')
   Route.post('/register', 'AuthController.register').as('register')
+
+  Route.group(() => {
+    Route.post('/google', 'AuthSocialController.google').as('google')
+  }).prefix('/auth-social').as('auth-social')
   
   Route.group(() => {
     Route.post('/send', 'EmailController.send').as('send').middleware(['auth', 'unverified'])
