@@ -235,3 +235,4 @@ export const validator: ValidatorConfig = {}
 
 export const appUrl = Env.get('APP_URL')
 export const resetPasswordUrl = Env.get('RESET_PASSWORD_URL')
+export const clientUrl = Env.get('CLIENT_URL')

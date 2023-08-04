@@ -1,5 +1,5 @@
 import { LucidModel } from "@ioc:Adonis/Lucid/Orm"
-import { GetAllOptions, StoreOptions, GetOneOptions, UpdateOneOptions, DeleteOneOptions } from "Contracts/repository"
+import { GetAllOptions, StoreOptions, GetOneOptions, UpdateOneOptions, DeleteOneOptions, DeleteManyOptions } from "Contracts/repository"
 
 export default abstract class Repository<T> {
     public abstract model: LucidModel
@@ -20,7 +20,7 @@ export default abstract class Repository<T> {
 
     public async updateOne(options: UpdateOneOptions & { target?: typeof this.model }) {
         if (!options.target) {
-            options.target = await this.getOne({ filter: options.filter })
+            options.target = await this.getOne({ filter: options.filter as Record<string, any> })
         }
 
         await options.target.merge(options.values).save()
@@ -36,5 +36,11 @@ export default abstract class Repository<T> {
         await options.target.delete()
 
         return options.target
+    }
+
+    public async deleteMany(options: DeleteManyOptions) {
+        return await this.model.query()
+            .if(options.filter.user_id, query => query.where('user_id', options.filter.user_id))
+            .delete()
     }
 }

@@ -42,5 +42,6 @@ Server.middleware.registerNamed({
     auth: () => import('App/Middleware/Auth'),
     resource: () => import('App/Middleware/Resource'),
     signed: () => import('App/Middleware/Signed'),
-    unverified: () => import('App/Middleware/Unverified')
+    unverified: () => import('App/Middleware/Unverified'),
+    throttle: () => import('@adonisjs/limiter/build/throttle'),
 })

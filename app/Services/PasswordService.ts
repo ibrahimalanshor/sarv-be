@@ -16,6 +16,11 @@ export class PasswordServive {
                 email: options.email,
             }
         })
+        await this.resetPasswordRepository.deleteMany({
+            filter: {
+                user_id: user.id
+            }
+        })
         const resetPassword = await this.resetPasswordRepository.store({
             values: {
                 token: string.generateRandom(32),
@@ -31,7 +36,8 @@ export class PasswordServive {
     public async reset(options: ResetPasswordOptions<HttpContextContract>) {
         const resetPassword = await this.resetPasswordRepository.getOne({
             filter: {
-                token: options.token
+                token: options.token,
+                is_expired: false
             }
         })
         await this.resetPasswordRepository.deleteOne({

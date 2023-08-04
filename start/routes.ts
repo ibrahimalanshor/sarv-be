@@ -33,12 +33,12 @@ Route.group(() => {
   }).prefix('/auth-social').as('auth-social')
   
   Route.group(() => {
-    Route.post('/send', 'EmailController.send').as('send').middleware(['auth', 'unverified'])
+    Route.post('/send', 'EmailController.send').as('send').middleware(['auth', 'unverified']).middleware('throttle:resend-verification')
     Route.get('/verify', 'EmailController.verify').as('verify').middleware('signed')
   }).prefix('/email').as('email')
 
   Route.group(() => {
-    Route.post('/forgot', 'PasswordController.forgot').as('forgot')
+    Route.post('/forgot', 'PasswordController.forgot').as('forgot').middleware('throttle:forgot-password')
     Route.post('/reset', 'PasswordController.reset').as('reset')
   }).prefix('/password').as('password')
 

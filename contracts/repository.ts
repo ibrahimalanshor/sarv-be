@@ -32,3 +32,7 @@ export interface DeleteOneOptions<Context = {}> {
     filter: Record<string, any>
     context?: Context
 }
+
+export interface DeleteManyOptions {
+    filter: Record<string, any>
+}
