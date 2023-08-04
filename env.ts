@@ -36,4 +36,5 @@ export default Env.rules({
   RESET_PASSWORD_URL: Env.schema.string(),
   GOOGLE_CLIENT_ID: Env.schema.string(),
   GOOGLE_CLIENT_SECRET: Env.schema.string(),
+  CLIENT_URL: Env.schema.string()
 })

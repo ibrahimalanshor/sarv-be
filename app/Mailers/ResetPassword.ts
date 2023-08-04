@@ -24,7 +24,6 @@ export default class ResetPassword extends BaseMailer {
    * also be async.
    */
   public prepare(message: MessageContract) {
-    console.log(`${Config.get('auth.resetPasswordUrl')}?email=${this.resetPassword.user.email}&token=${this.resetPassword.token}`)
     message
       .subject('Reset Password')
       .from(Config.get('mail.from'))

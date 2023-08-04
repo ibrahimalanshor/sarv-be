@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { inject } from "@adonisjs/fold";
 import { EmailService } from 'App/Services/EmailService';
 import User from 'App/Models/User';
+import Config from '@ioc:Adonis/Core/Config'
 
 @inject()
 export default class EmailController {
@@ -22,6 +23,6 @@ export default class EmailController {
             context
         })
 
-        return context.response.ok({ message: 'Success verify email' })
+        return context.response.redirect(Config.get('app.clientUrl'))
     }
 }
